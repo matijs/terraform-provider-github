@@ -280,6 +280,11 @@ func resourceGithubRepository() *schema.Resource {
 							Description:      "The type the page should be sourced.",
 							ValidateDiagFunc: validateValueFunc([]string{"legacy", "workflow"}),
 						},
+						"https_enforced": {
+							Type:        schema.TypeBool,
+							Optional:    true,
+							Description: "Whether the rendered GitHub Pages site will only be served over HTTPS",
+						},
 						"cname": {
 							Type:        schema.TypeString,
 							Optional:    true,
@@ -959,6 +964,7 @@ func flattenPages(pages *github.Pages) []interface{} {
 	pagesMap := make(map[string]interface{})
 	pagesMap["source"] = []interface{}{sourceMap}
 	pagesMap["build_type"] = pages.GetBuildType()
+	pagesMap["https_enforced"] = pages.GetHTTPSEnforced()
 	pagesMap["url"] = pages.GetURL()
 	pagesMap["status"] = pages.GetStatus()
 	pagesMap["cname"] = pages.GetCNAME()
